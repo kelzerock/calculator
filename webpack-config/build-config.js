@@ -18,7 +18,7 @@ const buildConfig = (options) => {
     plugins: buildPlugins(options),
     devServer: buildDevserver(options),
     resolve: {
-      extensions: ['.js'],
+      extensions: ['.js', '.css', '.scss'],
     },
   };
 
