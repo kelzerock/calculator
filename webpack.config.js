@@ -1,38 +1,18 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const { buildConfig } = require('./webpack-config/build-config');
 
 const webpackConfigurator = (env) => {
   const { mode } = env;
-  const config = {
-    mode: mode === 'prod' ? 'production' : 'development',
-    entry: './src/index.js',
-    output: {
-      filename: 'main-[contenthash].js',
-      path: path.resolve(__dirname, 'build'),
-      clean: true,
+  const options = {
+    mode,
+    paths: {
+      build: path.resolve(__dirname, 'build'),
+      public: path.resolve(__dirname, 'public'),
     },
-    module: {
-      rules: [
-        {
-          test: /\.s[ac]ss$/i,
-          use: ['style-loader', 'css-loader', 'sass-loader'],
-        },
-      ],
-    },
-    plugins: [
-      new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, 'public', 'index.html'),
-      }),
-    ],
-    devServer: {
-      static: {
-        directory: path.resolve(__dirname, 'public'),
-      },
-      port: 8000,
-    },
+    port: 8000,
   };
 
-  return config;
+  return buildConfig(options);
 };
 
-export default webpackConfigurator;
+module.exports = webpackConfigurator;

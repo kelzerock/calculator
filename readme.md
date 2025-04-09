@@ -2,7 +2,7 @@
 
 ## Task
 
- Task instruction: [link](https://docs.google.com/document/d/1zpXXeSae-BlcxPKgw3DhxZA92cspVailrPYoaXSYrW8/edit?pli=1&tab=t.0)
+Task instruction: [link](https://docs.google.com/document/d/1zpXXeSae-BlcxPKgw3DhxZA92cspVailrPYoaXSYrW8/edit?pli=1&tab=t.0)
 
 ## Instruction for build this app
 

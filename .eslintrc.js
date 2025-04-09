@@ -1,6 +1,7 @@
 module.exports = {
   root: true,
   env: {
+    browser: true,
     commonjs: true,
     es6: true,
     node: true,
@@ -15,6 +16,7 @@ module.exports = {
     ecmaVersion: 2022,
   },
   rules: {
+    'import/prefer-default-export': 'off',
     'prettier/prettier': [
       'error',
       {
@@ -23,6 +25,6 @@ module.exports = {
     ],
   },
   plugins: ['prettier'],
-  ignorePatterns: ['build/'],
+  ignorePatterns: ['build/', 'webpack-config/'],
   noInlineConfig: true,
 };

@@ -1,2 +1,3 @@
-const a = (x, y) => x + y;
-a(3, 5);
+import { app } from './components/app/app';
+
+app();

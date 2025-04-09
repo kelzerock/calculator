@@ -5,8 +5,10 @@
   "scripts": {
     "build:prod": "webpack --env mode=prod",
     "build:dev": "webpack --env mode=dev",
-    "serve": "webpack serve --open",
+    "serve": "webpack serve --open --env mode=dev",
     "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "prettier": "prettier --write .",
     "prepare": "git config core.hooksPath .git-hooks || echo 'Not in a git repo'"
   },
   "keywords": [
