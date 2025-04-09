@@ -1,7 +1,10 @@
+import { handleMathOperation } from '../../utils/handleMathOperation';
+import { handlePercent } from '../../utils/handlePercent';
+
 export class State {
   constructor(display) {
     this.display = display;
-    this.currentState = '0';
+    this.currentState = '';
     this.lastState = null;
     this.operator = null;
     this.updateDisplay();
@@ -25,7 +28,12 @@ export class State {
 
   updateDisplay() {
     const message = this.currentState;
-    console.log({ message, state: this.currentState });
+    console.log({
+      message,
+      stateCur: this.currentState,
+      laststate: this.lastState,
+      oper: this.operator,
+    });
     if (message.length > 11) {
       this.display.value = message.slice(-11);
     } else {
@@ -51,7 +59,11 @@ export class State {
     }
     if (infoAboutOperation === ',') {
       if (this.currentState.includes('.')) return;
-      this.currentState += '.';
+      if (this.currentState.length === 0) {
+        this.currentState = '0.';
+      } else {
+        this.currentState += '.';
+      }
     }
     if (infoAboutOperation === '±') {
       if (this.currentState === '0') return;
@@ -60,6 +72,34 @@ export class State {
       } else {
         this.currentState = `-${this.currentState}`;
       }
+    }
+    if (infoAboutOperation === '%') {
+      if (this.currentState === 0) return;
+      const newData = handlePercent(this.currentState);
+      this.currentState = newData;
+    }
+    if (['+', '-', '×', '÷'].includes(infoAboutOperation)) {
+      if (this.lastState && this.operator) {
+        this.lastState = handleMathOperation(
+          this.operator,
+          this.lastState,
+          this.currentState
+        );
+        console.log({ lastState: this.lastState });
+        this.operator = infoAboutOperation;
+        this.currentState = '';
+      } else {
+        this.lastState = this.currentState;
+        this.operator = infoAboutOperation;
+        this.currentState = '';
+      }
+    }
+    if (infoAboutOperation === '=') {
+      this.currentState = handleMathOperation(
+        this.operator,
+        this.lastState,
+        this.currentState
+      );
     }
     this.updateDisplay();
   }
