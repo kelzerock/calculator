@@ -14,8 +14,14 @@ export const createDisplay = (parent) => {
     attr: [
       { data: 'readonly', value: '' },
       { data: 'type', value: 'number' },
-      { data: 'value', value: '10923' },
     ],
+  });
+  displayInput.addEventListener('input', () => {
+    console.log('dd');
+    const displayMessage = displayInput.value;
+    if (displayMessage.length > 12) {
+      displayInput.value = displayMessage.slice(-4);
+    }
   });
 
   return displayInput;
