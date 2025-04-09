@@ -1,4 +1,5 @@
 import { createElement } from '../../utils/createElement';
+import { createCalculator } from '../calculator/calculator';
 import styles from './app.module.scss';
 import { createFooter } from './footer/footer';
 import { createHeader } from './header/header';
@@ -11,7 +12,6 @@ const mainContainers = [
   {
     tag: 'main',
     cls: styles.main,
-    text: 'main',
   },
   {
     tag: 'footer',
@@ -30,6 +30,6 @@ export const app = () => {
   );
 
   createHeader(header);
-  console.log(main);
+  createCalculator(main);
   createFooter(footer);
 };
