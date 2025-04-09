@@ -44,6 +44,23 @@ export class State {
         this.currentState += infoAboutOperation;
       }
     }
+    if (infoAboutOperation === '0') {
+      if (this.currentState === '0') {
+        this.currentState += infoAboutOperation;
+      }
+    }
+    if (infoAboutOperation === ',') {
+      if (this.currentState.includes('.')) return;
+      this.currentState += '.';
+    }
+    if (infoAboutOperation === '±') {
+      if (this.currentState === '0') return;
+      if (this.currentState[0] === '-') {
+        this.currentState = this.currentState.slice(1);
+      } else {
+        this.currentState = `-${this.currentState}`;
+      }
+    }
     this.updateDisplay();
   }
 }

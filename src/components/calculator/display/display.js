@@ -13,7 +13,7 @@ export const createDisplay = (parent) => {
     cls: styles.display,
     attr: [
       { data: 'readonly', value: '' },
-      { data: 'type', value: 'number' },
+      { data: 'type', value: 'text' },
     ],
   });
   displayInput.addEventListener('input', () => {
