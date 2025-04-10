@@ -203,6 +203,5 @@ export class State {
       this.readyToNextMathOperation = false;
       this.updateDisplayResult();
     }
-    console.log(this);
   }
 }

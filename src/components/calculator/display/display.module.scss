@@ -3,6 +3,7 @@
   padding: 20px 20px 30px 20px;
   display: flex;
   align-items: flex-end;
+  position: relative;
 }
 
 .display {
@@ -19,4 +20,43 @@
   border: none;
   text-align: right;
   user-select: none;
+
+}
+
+.theme {
+  position: absolute;
+  width: 15px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  top: 20px;
+  left: 20px;
+  background-color: #ffb900;
+  overflow: hidden;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &::after {
+    content: "";
+    width: 15px;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    background-color: var(--color-gray-800);
+    position: absolute;
+    transform: rotate(180deg);
+    transform-origin: top;
+    transition: transform .3s ease-in;
+  }
+
+  &.themeDark::after {
+    content: "";
+    width: 15px;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    background-color: var(--color-gray-800);
+    position: absolute;
+    transform: rotate(40deg);
+    transform-origin: top;
+  }
 }
