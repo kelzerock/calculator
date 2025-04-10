@@ -1,0 +1,12 @@
+.link {
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--color-gray-700);
+  padding: 10px 20px;
+  font-size: .6em;
+
+  &:hover {
+    cursor: pointer;
+  }
+}

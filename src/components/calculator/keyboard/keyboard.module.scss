@@ -1,0 +1,54 @@
+.wrapper {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+}
+
+.key {
+  border: solid var(--color-gray-700) 1px;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  color: var(--color-gray-200);
+  border-radius: 5px;
+  user-select: none;
+  transition: background .2s ease-in;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.keyZero {
+  padding: 3px;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.keyBlack {
+  background: var(--color-gray-500);
+
+  &:hover {
+    background: var(--color-gray-600);
+  }
+}
+
+.keyOrange {
+
+  background: var(--color-orange-400);
+
+  &:hover {
+    background: var(--color-orange-600);
+  }
+}
+
+.keyGray {
+  background: var(--color-gray-400);
+
+  &:hover {
+    background: var(--color-gray-600);
+  }
+}
