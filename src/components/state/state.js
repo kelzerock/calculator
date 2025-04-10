@@ -14,6 +14,7 @@ export class State {
     this.stack = [];
     this.lastArgument = null;
     this.readyToNextMathOperation = false;
+    this.flagForNextEqual = false;
   }
 
   set last_State(numStr) {
@@ -59,6 +60,7 @@ export class State {
     this.stack = [];
     this.operator = null;
     this.operationComplete = false;
+    this.readyToNextMathOperation = false;
   }
 
   handleOperation(infoAboutOperation) {
@@ -66,7 +68,7 @@ export class State {
       this.resetState();
       this.updateDisplay();
     }
-    if ('123456789'.includes(infoAboutOperation)) {
+    if ('1234567890'.includes(infoAboutOperation)) {
       if (this.operationComplete && last(this.stack)) {
         this.stack.push(this.currentState);
         this.currentState = '';
@@ -77,17 +79,16 @@ export class State {
       } else {
         this.currentState += infoAboutOperation;
       }
+      this.flagForNextEqual = true;
       this.updateDisplay();
     }
-    if (infoAboutOperation === '0') {
-      if (this.currentState === '0') {
-        return;
-      }
-      this.currentState += infoAboutOperation;
 
-      this.updateDisplay();
-    }
     if (infoAboutOperation === ',') {
+      if (this.operationComplete && last(this.stack)) {
+        this.stack.push(this.currentState);
+        this.currentState = '';
+        this.operationComplete = false;
+      }
       if (this.currentState.includes('.')) return;
       if (this.currentState.length === 0) {
         this.currentState = '0.';
@@ -96,6 +97,7 @@ export class State {
       }
       this.updateDisplay();
     }
+
     if (infoAboutOperation === '±') {
       if (this.operationComplete && last(this.stack)) {
         const lastDigital = last(this.stack);
@@ -107,7 +109,7 @@ export class State {
         }
         this.updateDisplayResult();
       } else {
-        if (this.currentState === '0') return;
+        if (this.currentState === '0' || this.currentState === '') return;
         if (this.currentState[0] === '-') {
           this.currentState = this.currentState.slice(1);
         } else {
@@ -116,67 +118,87 @@ export class State {
         this.updateDisplay();
       }
     }
+
     if (infoAboutOperation === '%') {
-      if (this.currentState === '0') return;
+      if (this.currentState === '') return;
       const newData = handlePercent(this.currentState);
       if (this.operator) {
         this.stack.push(
           handleMathOperation(this.operator, last(this.stack), newData)
         );
         this.operationComplete = true;
-        this.updateDisplayResult();
       } else {
-        this.currentState = newData;
-        this.updateDisplay();
+        this.stack.push(newData);
       }
+      this.currentState = '';
+      this.updateDisplayResult();
     }
 
     if (['+', '-', '×', '÷'].includes(infoAboutOperation)) {
-      if (this.currentState === '0') {
-        this.operationComplete = infoAboutOperation;
+      if (this.currentState === '') {
+        this.operator = infoAboutOperation;
         return;
       }
       if (this.operationComplete) {
-        console.log('xxxx');
-        // if (this.stack.length === 0) {
-
-        // this.stack.push(this.currentState);
         this.currentState = '';
         this.operator = infoAboutOperation;
-        // } else {
-        // this.currentstate = '';
-        // this.operator = infoAboutOperation;
-        // }
+        this.readyToNextMathOperation = true;
+      } else if (this.readyToNextMathOperation) {
+        this.stack.push(
+          handleMathOperation(
+            this.operator,
+            last(this.stack),
+            this.currentState
+          )
+        );
+        this.readyToNextMathOperation = true;
+        this.operator = infoAboutOperation;
+        this.currentState = '';
       } else {
-        console.log('yyyy');
-        if (this.readyToNextMathOperation) {
-          this.stack.push(
-            handleMathOperation(
-              this.operator,
-              last(this.stack),
-              this.currentState
-            )
-          );
-          this.readyToNextMathOperation = false;
-          this.operator = infoAboutOperation;
-          this.currentState = '';
-        } else {
-          this.readyToNextMathOperation = true;
-          this.operator = infoAboutOperation;
-          this.stack.push(this.currentState);
-          this.currentState = '';
-        }
+        this.readyToNextMathOperation = true;
+        this.operator = infoAboutOperation;
+        this.stack.push(this.currentState);
+        this.currentState = '';
       }
       this.operationComplete = false;
       this.updateDisplayResult();
     }
 
     if (infoAboutOperation === '=') {
+      if (this.readyToNextMathOperation) {
+        this.lastArgument = this.currentState;
+        this.flagForNextEqual = false;
+      }
+
       const lastArgument = last(this.stack);
-      this.stack = [];
-      this.stack.push(
-        handleMathOperation(this.operator, lastArgument, this.currentState)
-      );
+      const handle = () => {
+        if (this.flagForNextEqual) {
+          this.flagForNextEqual = false;
+          return handleMathOperation(
+            this.operator,
+            this.currentState,
+            this.lastArgument
+          );
+        }
+        return handleMathOperation(
+          this.operator,
+          lastArgument,
+          this.lastArgument
+        );
+      };
+      if (!(this.operator && lastArgument)) return;
+      if (this.currentState === '') {
+        if (this.lastArgument) {
+          this.stack.push(
+            handleMathOperation(this.operator, lastArgument, this.lastArgument)
+          );
+        } else {
+          this.stack.push(handleMathOperation(this.operator, lastArgument));
+          this.lastArgument = lastArgument;
+        }
+      } else {
+        this.stack.push(handle());
+      }
       this.operationComplete = true;
       this.readyToNextMathOperation = false;
       this.updateDisplayResult();

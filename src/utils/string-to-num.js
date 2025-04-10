@@ -6,5 +6,6 @@ export const strToNum = (string) => {
       return number;
     }
   }
+  console.log({ string });
   throw Error('Incorrect input data in function');
 };
