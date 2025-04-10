@@ -35,17 +35,15 @@ export class State {
 
   updateDisplay() {
     const message = this.currentState;
-    if (message === '') {
-      this.display.value = '0';
-    } else if (message.length > 11) {
-      this.display.value = message.slice(-11);
-    } else {
-      this.display.value = message;
-    }
+    this.displayUpdater(message);
   }
 
   updateDisplayResult() {
     const message = last(this.stack) || '';
+    this.displayUpdater(message);
+  }
+
+  displayUpdater(message) {
     if (message === '') {
       this.display.value = '0';
     } else if (message.length > 11) {
@@ -61,6 +59,7 @@ export class State {
     this.operator = null;
     this.operationComplete = false;
     this.readyToNextMathOperation = false;
+    this.flagForNextEqual = false;
   }
 
   handleOperation(infoAboutOperation) {
@@ -68,6 +67,7 @@ export class State {
       this.resetState();
       this.updateDisplay();
     }
+
     if ('1234567890'.includes(infoAboutOperation)) {
       if (this.operationComplete && last(this.stack)) {
         this.stack.push(this.currentState);
