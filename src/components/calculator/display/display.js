@@ -17,7 +17,6 @@ export const createDisplay = (parent) => {
     ],
   });
   displayInput.addEventListener('input', () => {
-    console.log('dd');
     const displayMessage = displayInput.value;
     if (displayMessage.length > 12) {
       displayInput.value = displayMessage.slice(-4);

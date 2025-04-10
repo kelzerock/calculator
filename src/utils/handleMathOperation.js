@@ -2,16 +2,15 @@ import { numToString } from './num-to-string';
 import { strToNum } from './string-to-num';
 
 export const handleMathOperation = (operator, ...arg) => {
-  const handleArguments = arg.map(strToNum);
-  const sum = (a, b) => a + b;
-  const subtraction = (a, b) => a - b;
-  const multiplication = (a, b) => a * b;
-  const division = (a, b) => a / b;
+  const handleArguments = arg.filter(Boolean).map(strToNum);
+  const sum = (a, b = 0) => a + b;
+  const subtraction = (a, b = 0) => a - b;
+  const multiplication = (a, b = a) => a * b;
+  const division = (a, b = 1) => a / b;
   let result;
 
   switch (operator) {
     case '+':
-      console.log('sum');
       result = sum(...handleArguments);
       break;
     case '-':
@@ -27,6 +26,5 @@ export const handleMathOperation = (operator, ...arg) => {
       break;
   }
 
-  console.log({ result, handleArguments });
   return numToString(result);
 };
